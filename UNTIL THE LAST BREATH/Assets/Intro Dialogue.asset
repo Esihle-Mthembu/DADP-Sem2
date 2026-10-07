@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cac130ca4c71084184f082ae4f8ac91, type: 3}
+  m_Name: Intro Dialogue
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueLines:
+  - speakerName: GRANDMOTHER
+    dialogueText: 'Angela, i dont think i can make it. Don''t let them give up on
+      me. '
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: ANGELA
+    dialogueText: I won't, Gran. I promise.
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: Dr Smith
+    dialogueText: Angela, a word-outside,please.
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: ANGELA
+    dialogueText: Just tell me straight, Doctor. Whst's happening to her ?
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: 'Dr Smith '
+    dialogueText: Her condition isn't in any of our current medical records. But
+      it has been documented before - decades ago, right here, in the East Wing.
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: ANGELA
+    dialogueText: You're asking me to go into a part of this hospital nobody's allowed
+      into.
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: 'Dr Smith '
+    dialogueText: I'm asking you to save her. Dr Gustavo's files are the only lead
+      we have. Find them, bring them back, and we may still have time.
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: 'ANGELA '
+    dialogueText: Then I don't have a choice
+    backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
+  - speakerName: 'ANGELA '
+    dialogueText: '"East Wing- Closed, 1994." ...Smith said Gustavo''s records are
+      still back there.'
+    backgroundImage: {fileID: 21300000, guid: 4790806de5ce18f4a8aa1c3118d4aeb3, type: 3}
+  - speakerName: 'ANGELA '
+    dialogueText: Guess there's no elevator to the past...Wait is that a GHOST!
+    backgroundImage: {fileID: 21300000, guid: 4790806de5ce18f4a8aa1c3118d4aeb3, type: 3}
