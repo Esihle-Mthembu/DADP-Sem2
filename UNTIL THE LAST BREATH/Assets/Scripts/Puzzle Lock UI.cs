@@ -73,4 +73,13 @@ public class PuzzleLockUI : MonoBehaviour
             Close();
         }
     }
+
+    private void LateUpdate()
+    {
+        if (isOpen && lockCursorWhileOpen)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 }
