@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerInteractable : MonoBehaviour
 {
     public Camera playerCamera;
-    public float interactRange = 3f;
+    public float interactRange = 6f;
     public LayerMask interactableLayer = ~0;
     public GameObject interactPromptUI;
 

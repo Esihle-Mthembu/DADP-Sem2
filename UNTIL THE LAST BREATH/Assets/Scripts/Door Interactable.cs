@@ -15,23 +15,19 @@ public class DoorInteractable : MonoBehaviour
     public string lockedFeedbackMessage = "It's locked. You need a key.";
 
     [Header("Door Movement")]
-    public Transform doorTransform;
-    public float openAngle = 90f;
-    public float openSpeed = 2f;
+    public Animator animator;
 
     [Header("Locks")]
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
     private bool isOpen = false;
-    private Quaternion closedRotation;
-    private Quaternion openRotation;
 
     void Start()
     {
-        if (doorTransform == null) doorTransform = transform;
-        closedRotation = doorTransform.localRotation;
-        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+        if (animator == null) animator = GetComponentInParent<Animator>();
+        if (animator == null) Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
     }
 
     public void Interact()
@@ -77,20 +73,10 @@ public class DoorInteractable : MonoBehaviour
 
     private void ToggleDoor()
     {
-        isOpen = !isOpen;
-        StopAllCoroutines();
-        StartCoroutine(RotateDoor(isOpen ? openRotation : closedRotation));
-    }
+        if (animator == null) return;
 
-    private System.Collections.IEnumerator RotateDoor(Quaternion target)
-    {
-        while (Quaternion.Angle(doorTransform.localRotation, target) > 0.5f)
-        {
-            doorTransform.localRotation = Quaternion.Slerp(
-                doorTransform.localRotation, target, Time.deltaTime * openSpeed);
-            yield return null;
-        }
-        doorTransform.localRotation = target;
+        isOpen = !isOpen;
+        animator.SetBool("IsOpen", isOpen);
     }
 
     public void Unlock()
