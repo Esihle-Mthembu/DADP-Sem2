@@ -6,7 +6,7 @@ public class PlayerInteractable : MonoBehaviour
 {
     public Camera playerCamera;
     public float interactRange = 6f;
-    public float proximityRadius = 3f;
+    public float proximityRadius = 15f;
     public LayerMask interactableLayer = ~0;
     public GameObject interactPromptUI;
     public TMP_Text interactPromptText;

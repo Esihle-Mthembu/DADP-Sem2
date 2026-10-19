@@ -17,7 +17,6 @@ public class PinPadUI : MonoBehaviour
 
     [Header("Player Control")]
     public MonoBehaviour playerInputScript; 
-    public bool lockCursorWhileOpen = false;
 
     private string enteredDigits = "";
     private DoorInteractable currentDoor;
@@ -32,7 +31,11 @@ public class PinPadUI : MonoBehaviour
         currentDoor = door;
         enteredDigits = "";
         UpdateDisplay();
-        if (feedbackText != null) feedbackText.text = "";
+        
+        if (feedbackText != null)
+        {
+            feedbackText.text = "";
+        }
 
         panelRoot.SetActive(true);
 
@@ -41,8 +44,8 @@ public class PinPadUI : MonoBehaviour
             playerInputScript.enabled = false;
         }
 
-        Cursor.lockState = lockCursorWhileOpen ? CursorLockMode.None : Cursor.lockState;
-        Cursor.visible = lockCursorWhileOpen ? true : Cursor.visible;
+            Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void Close()
@@ -55,8 +58,8 @@ public class PinPadUI : MonoBehaviour
             playerInputScript.enabled = true;
         }
 
-        Cursor.lockState = lockCursorWhileOpen ? CursorLockMode.Locked : Cursor.lockState;
-        Cursor.visible = lockCursorWhileOpen ? false : Cursor.visible;
+            Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void OnDigitPressed(int digit)
