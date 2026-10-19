@@ -50,6 +50,8 @@ public class PinPadUI : MonoBehaviour
 
     public void Close()
     {
+        Debug.Log("Close pressed");
+
         panelRoot.SetActive(false);
         currentDoor = null;
 
@@ -77,6 +79,8 @@ public class PinPadUI : MonoBehaviour
 
     public void OnClear()
     {
+        Debug.Log("Close pressed");
+
         enteredDigits = "";
         UpdateDisplay();
         if (feedbackText != null)
