@@ -1,7 +1,7 @@
 using UnityEngine;
 using InventorySystem;
 
-public class DoorInteractable : MonoBehaviour
+public class DoorInteractable : MonoBehaviour, IInteractable
 {
     public enum LockType { None, Pin, Puzzle, Key }
 
@@ -15,43 +15,69 @@ public class DoorInteractable : MonoBehaviour
     public string lockedFeedbackMessage = "It's locked. You need a key.";
 
     [Header("Door Movement")]
-    public Transform doorTransform;
-    public float openAngle = 90f;
-    public float openSpeed = 2f;
+    public Animator animator;
 
     [Header("Locks")]
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
     private bool isOpen = false;
-    private Quaternion closedRotation;
-    private Quaternion openRotation;
 
     void Start()
     {
-        if (doorTransform == null) doorTransform = transform;
-        closedRotation = doorTransform.localRotation;
-        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+        if (animator == null) animator = GetComponentInParent<Animator>();
+        if (animator == null) Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+    }
+
+    public string GetPrompt()
+    {
+        if (!isUnlocked)
+        {
+            switch (lockType)
+            {
+                case LockType.Pin:
+                    return linkedPinPad != null
+                        ? "Locked - press F to enter PIN"
+                        : "Locked";
+
+                case LockType.Puzzle:
+                    return linkedPuzzleLock != null
+                        ? "Locked - press F to solve the puzzle"
+                        : "Locked";
+
+                case LockType.Key:
+                    bool hasKey = InventoryManager.Instance != null
+                                  && InventoryManager.Instance.HasItem(requiredKeyType);
+                    return hasKey
+                        ? "Press F to unlock"
+                        : "Locked - you need a key";
+            }
+        }
+
+        return isOpen ? "Press F to close" : "Press F to open";
     }
 
     public void Interact()
     {
-        if (!isUnlocked && lockType == LockType.Pin && linkedPinPad != null)
+        if (!isUnlocked)
         {
-            linkedPinPad.Open(this);
-            return;
-        }
+            switch (lockType)
+            {
+                case LockType.Pin:
+                    if (linkedPinPad != null) linkedPinPad.Open(this);
+                    else Debug.LogWarning("DoorInteractable: Pin lock but no PinPadUI assigned on " + name, this);
+                    return;
 
-        if (!isUnlocked && lockType == LockType.Puzzle && linkedPuzzleLock != null)
-        {
-            linkedPuzzleLock.Open(this);
-            return;
-        }
+                case LockType.Puzzle:
+                    if (linkedPuzzleLock != null) linkedPuzzleLock.Open(this);
+                    else Debug.LogWarning("DoorInteractable: Puzzle lock but no PuzzleLockUI assigned on " + name, this);
+                    return;
 
-        if (!isUnlocked && lockType == LockType.Key)
-        {
-            TryOpenWithKey();
-            return;
+                case LockType.Key:
+                    TryOpenWithKey();
+                    return;
+            }
         }
 
         ToggleDoor();
@@ -77,20 +103,10 @@ public class DoorInteractable : MonoBehaviour
 
     private void ToggleDoor()
     {
-        isOpen = !isOpen;
-        StopAllCoroutines();
-        StartCoroutine(RotateDoor(isOpen ? openRotation : closedRotation));
-    }
+        if (animator == null) return;
 
-    private System.Collections.IEnumerator RotateDoor(Quaternion target)
-    {
-        while (Quaternion.Angle(doorTransform.localRotation, target) > 0.5f)
-        {
-            doorTransform.localRotation = Quaternion.Slerp(
-                doorTransform.localRotation, target, Time.deltaTime * openSpeed);
-            yield return null;
-        }
-        doorTransform.localRotation = target;
+        isOpen = !isOpen;
+        animator.SetBool("IsOpen", isOpen);
     }
 
     public void Unlock()

@@ -31,9 +31,29 @@ public class PuzzleGridController : MonoBehaviour
         solved = false;
         firstSelectedSlot = -1;
         if (shuffleOnEnable)
+        {
             ShuffleAndDisplay();
+        }
         else
+        {
             DisplayGrid();
+        }
+
+        foreach (var img in tileImages)
+        {
+            img.color = Color.white;
+        }
+    }
+
+    [ContextMenu("Fill Tiles From Children")]
+    private void FillTilesFromChildren()
+    {
+        tileImages.Clear();
+        foreach (Transform child in transform)
+        {
+            var img = child.GetComponent<Image>();
+            if (img != null) tileImages.Add(img);
+        }
     }
 
     private void SliceSourceImage()
@@ -59,6 +79,12 @@ public class PuzzleGridController : MonoBehaviour
                 );
                 correctSprites[index] = sprite;
             }
+        }
+
+        slotContents = new int[tileCount];
+        for (int i = 0; i < tileCount; i++)
+        {
+            slotContents[i] = i;
         }
     }
 
@@ -94,7 +120,16 @@ public class PuzzleGridController : MonoBehaviour
 
     public void OnTileClicked(int slotIndex)
     {
-        if (solved) return;
+        Debug.Log($"clicked={slotIndex} slotContents={slotContents?.Length} tiles={tileImages.Count} cols={columns} rows={rows}", this);
+        if (slotContents == null || slotIndex < 0 || slotIndex >= slotContents.Length || slotIndex >= tileImages.Count)
+        {
+            return;
+        }
+
+        if (solved)
+        {
+            return;
+        }
 
         if (firstSelectedSlot == -1)
         {
