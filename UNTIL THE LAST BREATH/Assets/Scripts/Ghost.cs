@@ -1,12 +1,15 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class Ghost : MonoBehaviour
 {
+    public static Ghost Instance { get; private set; }
+
     [Header("References")]
     public Transform player;
 
     [Header("Detection")]
-    public float detectionRange = 220f;   // how far away it starts chasing
+    public float detectionRange = 220f;   //How far away it starts chasing
 
     [Header("Movement")]
     public float chaseSpeed = 2f;
@@ -17,7 +20,14 @@ public class Ghost : MonoBehaviour
     public float ghostHeight = 0.2f;
     public float ghostSpeed = 1.5f;
 
+    private CharacterController controller;
     private float baseY;
+
+    void Awake()
+    {
+        Instance = this;
+        controller = GetComponent<CharacterController>();
+    }
 
     void Start()
     {
@@ -58,25 +68,20 @@ public class Ghost : MonoBehaviour
 
     private void ChasePlayer(float distanceToPlayer)
     {
-        // Horizontal direction toward the player
+        //Horizontal direction towards the player
         Vector3 direction = player.position - transform.position;
         direction.y = 0f;
         direction.Normalize();
 
+        Vector3 move = Vector3.zero;
         if (distanceToPlayer > stopDistance)
         {
-            Vector3 newPos = transform.position + direction * chaseSpeed * Time.deltaTime;
-            newPos.y = baseY + Mathf.Sin(Time.time * ghostSpeed) * ghostHeight;
-            transform.position = newPos;
-        }
-        else
-        {
-            Vector3 pos = transform.position;
-            pos.y = baseY + Mathf.Sin(Time.time * ghostSpeed) * ghostHeight;
-            transform.position = pos;
+            move = direction * chaseSpeed * Time.deltaTime;
         }
 
-        // Face the player
+        MoveWithHover(move);
+
+        //Face the player
         if (direction.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -86,9 +91,13 @@ public class Ghost : MonoBehaviour
 
     private void Hover()
     {
-        // Not chasing yet
-        Vector3 pos = transform.position;
-        pos.y = baseY + Mathf.Sin(Time.time * ghostSpeed) * ghostHeight;
-        transform.position = pos;
+        //Not chasing yet
+        MoveWithHover(Vector3.zero);
+    }
+
+    private void MoveWithHover(Vector3 horizontalMove)
+    {
+        horizontalMove.y = (baseY + Mathf.Sin(Time.time * ghostSpeed) * ghostHeight) - transform.position.y;
+        controller.Move(horizontalMove);
     }
 }

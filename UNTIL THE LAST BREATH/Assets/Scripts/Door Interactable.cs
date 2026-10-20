@@ -1,7 +1,7 @@
 using UnityEngine;
 using InventorySystem;
 
-public class DoorInteractable : MonoBehaviour
+public class DoorInteractable : MonoBehaviour, IInteractable
 {
     public enum LockType { None, Pin, Puzzle, Key }
 
@@ -15,43 +15,85 @@ public class DoorInteractable : MonoBehaviour
     public string lockedFeedbackMessage = "It's locked. You need a key.";
 
     [Header("Door Movement")]
-    public Transform doorTransform;
-    public float openAngle = 90f;
-    public float openSpeed = 2f;
+    public Animator animator;
 
     [Header("Locks")]
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
+    [Header("Save/Load")]
+    public string doorID; // Unique per door, used for saving/loading
+    [SerializeField] string openStateName = "Open";
+    [SerializeField] string closedStateName = "Closed";
+
     private bool isOpen = false;
-    private Quaternion closedRotation;
-    private Quaternion openRotation;
+    public bool IsOpen => isOpen;
 
     void Start()
     {
-        if (doorTransform == null) doorTransform = transform;
-        closedRotation = doorTransform.localRotation;
-        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponentInParent<Animator>();
+        }
+
+        if (animator == null)
+        {
+            Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+        }
+    }
+
+    public string GetPrompt()
+    {
+        if (!isUnlocked)
+        {
+            switch (lockType)
+            {
+                case LockType.Pin:
+                    return linkedPinPad != null
+                        ? "Locked - press F to enter PIN"
+                        : "Locked";
+
+                case LockType.Puzzle:
+                    return linkedPuzzleLock != null
+                        ? "Locked - press F to solve the puzzle"
+                        : "Locked";
+
+                case LockType.Key:
+                    bool hasKey = InventoryManager.Instance != null && InventoryManager.Instance.HasItem(requiredKeyType);
+                    return hasKey
+                        ? "Press F to unlock"
+                        : "Locked - you need a key";
+            }
+        }
+
+        return isOpen ? "Press F to close" : "Press F to open";
     }
 
     public void Interact()
     {
-        if (!isUnlocked && lockType == LockType.Pin && linkedPinPad != null)
+        if (!isUnlocked)
         {
-            linkedPinPad.Open(this);
-            return;
-        }
+            switch (lockType)
+            {
+                case LockType.Pin:
+                    if (linkedPinPad != null) linkedPinPad.Open(this);
+                    else Debug.LogWarning("DoorInteractable: Pin lock but no PinPadUI assigned on " + name, this);
+                    return;
 
-        if (!isUnlocked && lockType == LockType.Puzzle && linkedPuzzleLock != null)
-        {
-            linkedPuzzleLock.Open(this);
-            return;
-        }
+                case LockType.Puzzle:
+                    if (linkedPuzzleLock != null) linkedPuzzleLock.Open(this);
+                    else Debug.LogWarning("DoorInteractable: Puzzle lock but no PuzzleLockUI assigned on " + name, this);
+                    return;
 
-        if (!isUnlocked && lockType == LockType.Key)
-        {
-            TryOpenWithKey();
-            return;
+                case LockType.Key:
+                    TryOpenWithKey();
+                    return;
+            }
         }
 
         ToggleDoor();
@@ -67,9 +109,9 @@ public class DoorInteractable : MonoBehaviour
             return;
         }
 
-        if (consumeKeyOnUnlock && Inventory.Instance != null)
+        if (consumeKeyOnUnlock && InventoryManager.Instance != null)
         {
-            Inventory.Instance.ConsumeItem(requiredKeyType, 1);
+            InventoryManager.Instance.RemoveItem(requiredKeyType, 1);
         }
 
         Unlock();
@@ -77,25 +119,36 @@ public class DoorInteractable : MonoBehaviour
 
     private void ToggleDoor()
     {
-        isOpen = !isOpen;
-        StopAllCoroutines();
-        StartCoroutine(RotateDoor(isOpen ? openRotation : closedRotation));
-    }
-
-    private System.Collections.IEnumerator RotateDoor(Quaternion target)
-    {
-        while (Quaternion.Angle(doorTransform.localRotation, target) > 0.5f)
+        if (animator == null)
         {
-            doorTransform.localRotation = Quaternion.Slerp(
-                doorTransform.localRotation, target, Time.deltaTime * openSpeed);
-            yield return null;
+            return;
         }
-        doorTransform.localRotation = target;
+
+        isOpen = !isOpen;
+        animator.SetBool("IsOpen", isOpen);
     }
 
     public void Unlock()
     {
         isUnlocked = true;
         ToggleDoor();
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
+    }
+
+    public void ApplySavedState(bool unlocked, bool open)
+    {
+        isUnlocked = unlocked;
+        isOpen = open;
+
+        if (animator == null)
+        {
+            return;
+        }
+
+        animator.SetBool("IsOpen", open);
+        animator.Play(open ? openStateName : closedStateName, 0, 1f); //Jump straight to the end of the clip so the door doesn't animate on load
     }
 }

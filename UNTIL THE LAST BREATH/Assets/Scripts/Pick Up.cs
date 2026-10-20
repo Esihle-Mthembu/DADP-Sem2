@@ -8,6 +8,8 @@ public class PickUp : MonoBehaviour
     private Transform originalParent;
     private int originalLayer;
     private bool isHeld;
+    public string pickupID; //Unique per object
+    public bool IsHeld => isHeld;
 
     private void Awake()
     {
@@ -25,15 +27,24 @@ public class PickUp : MonoBehaviour
         transform.parent = holdPos;
 
         int holdLayer = LayerMask.NameToLayer("Hold");
-        if (holdLayer != -1) gameObject.layer = holdLayer;
+        if (holdLayer != -1)
+        {
+            gameObject.layer = holdLayer;
+        }
 
         if (playerCollider != null && col != null)
+        {
             Physics.IgnoreCollision(col, playerCollider, true);
+        }
     }
 
     public void MoveToHoldPoint(Vector3 targetPos)
     {
-        if (!isHeld) return;
+        if (!isHeld)
+        {
+            return;
+        }
+
         transform.position = targetPos;
     }
 
@@ -56,6 +67,8 @@ public class PickUp : MonoBehaviour
         rb.isKinematic = false;
 
         if (playerCollider != null && col != null)
+        {
             Physics.IgnoreCollision(col, playerCollider, false);
+        }
     }
 }
