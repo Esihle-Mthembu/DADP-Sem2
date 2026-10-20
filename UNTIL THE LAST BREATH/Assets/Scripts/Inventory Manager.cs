@@ -19,10 +19,9 @@ namespace InventorySystem
         [SerializeField]
         private List<ItemLimit> itemLimits = new List<ItemLimit>
         {
-            new ItemLimit { type = ItemType.File,         maxCount = 1 },
+            new ItemLimit { type = ItemType.File,         maxCount = 3 },
             new ItemLimit { type = ItemType.Key,          maxCount = 3 },
             new ItemLimit { type = ItemType.Torch,        maxCount = 1 },
-            new ItemLimit { type = ItemType.TorchBattery, maxCount = 3 },
         };
 
         private readonly Dictionary<ItemType, int> _maxCounts = new Dictionary<ItemType, int>();

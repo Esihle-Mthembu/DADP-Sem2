@@ -4,7 +4,6 @@ namespace InventorySystem
     {
         File,
         Key,
-        Torch,
-        TorchBattery
+        Torch
     }
 }

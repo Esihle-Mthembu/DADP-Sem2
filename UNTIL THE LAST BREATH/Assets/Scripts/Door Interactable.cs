@@ -21,13 +21,30 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
+    public string doorID; // Unique per door, used for saving/loading
     private bool isOpen = false;
+    public bool IsOpen => isOpen;
+
+    [Header("Save/Load (Animator state names)")]
+    [SerializeField] string openStateName = "Open";
+    [SerializeField] string closedStateName = "Closed";
 
     void Start()
     {
-        if (animator == null) animator = GetComponentInChildren<Animator>();
-        if (animator == null) animator = GetComponentInParent<Animator>();
-        if (animator == null) Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponentInParent<Animator>();
+        }
+
+        if (animator == null)
+        {
+            Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+        }
     }
 
     public string GetPrompt()
@@ -103,7 +120,10 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
     private void ToggleDoor()
     {
-        if (animator == null) return;
+        if (animator == null)
+        {
+            return;
+        }
 
         isOpen = !isOpen;
         animator.SetBool("IsOpen", isOpen);
@@ -113,5 +133,23 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     {
         isUnlocked = true;
         ToggleDoor();
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
+    }
+
+    public void ApplySavedState(bool unlocked, bool open)
+    {
+        isUnlocked = unlocked;
+        isOpen = open;
+
+        if (animator == null)
+        {
+            return;
+        }
+
+        animator.SetBool("IsOpen", open);
+        animator.Play(open ? openStateName : closedStateName, 0, 1f); //Jump straight to the end of the clip so the door doesn't animate on load
     }
 }
