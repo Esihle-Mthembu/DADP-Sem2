@@ -33,7 +33,8 @@ public class FPController : MonoBehaviour
     [Header("Throw Settings")]
     public float throwForce = 15f;
     public float throwUpwardBoost = 4f;
-
+    [Header("Interact settings")]
+    public float interactRange = 5f;
     private CharacterController controller;
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -143,6 +144,19 @@ public class FPController : MonoBehaviour
         if (!context.performed)
         {
             return;
+        }
+        if (heldObject == null)
+        {
+            Ray buttonRay = new Ray(cameraTransform.position, cameraTransform.forward);
+            if (Physics.Raycast(buttonRay, out RaycastHit buttonHit, interactRange))
+            {
+                ElevatorButton button = buttonHit.collider.GetComponentInParent<ElevatorButton>();
+                if (button != null)
+                {
+                    button.Press();
+                    return;
+                }
+            }
         }
 
         if (heldObject == null)
