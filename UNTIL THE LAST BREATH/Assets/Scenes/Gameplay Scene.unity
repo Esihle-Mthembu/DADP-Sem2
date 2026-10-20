@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -8333,7 +8333,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac70b7030959f04191f2c54c589e71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
-  promptText: Press E to pickup file.
+  promptText: Press E to add file to inventory.
+--- !u!114 &223557552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223557538}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61cbe20a66de72a4aa293b84316fcebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Collectible
+  itemType: 0
+  amount: 1
+  itemName: file
+  pickupID: File_Entrance1
 --- !u!1001 &233037802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8912,7 +8928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac70b7030959f04191f2c54c589e71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
-  promptText: Press E to pickup file.
+  promptText: Press E to add file to inventory.
 --- !u!114 &313024120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8927,7 +8943,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySystem.Collectible
   itemType: 0
   amount: 1
-  itemName: File_Entrance3
+  itemName: file
   pickupID: File_Entrance3
 --- !u!1 &319676656
 GameObject:
@@ -11402,7 +11418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527d646c3539bda4eb51137a21b53e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
-  itemType: 0
+  itemType: 1
   iconImage: {fileID: 1821077359}
   countText: {fileID: 423208343}
   showCountEvenIfMaxIsOne: 1
@@ -19747,6 +19763,7 @@ GameObject:
   - component: {fileID: 1000375953}
   - component: {fileID: 1000375955}
   - component: {fileID: 1000375956}
+  - component: {fileID: 1000375957}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Pickup
@@ -19886,7 +19903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac70b7030959f04191f2c54c589e71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
-  promptText: Press E to pickup file.
+  promptText: Press E to add file to inventory.
 --- !u!114 &1000375956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19899,6 +19916,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: File_Entrance2
+--- !u!114 &1000375957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000375949}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61cbe20a66de72a4aa293b84316fcebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Collectible
+  itemType: 0
+  amount: 1
+  itemName: file
   pickupID: File_Entrance2
 --- !u!1 &1012987562
 GameObject:
@@ -31385,6 +31418,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 223557548}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 223557552}
   m_SourcePrefab: {fileID: 100100000, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
 --- !u!4 &1619178276 stripped
 Transform:
@@ -40103,7 +40139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527d646c3539bda4eb51137a21b53e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
-  itemType: 0
+  itemType: 2
   iconImage: {fileID: 1357107188}
   countText: {fileID: 1567950419}
   showCountEvenIfMaxIsOne: 1
