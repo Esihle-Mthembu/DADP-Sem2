@@ -21,13 +21,30 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
+    [Header("Save/Load")]
+    public string doorID; // Unique per door, used for saving/loading
+    [SerializeField] string openStateName = "Open";
+    [SerializeField] string closedStateName = "Closed";
+
     private bool isOpen = false;
+    public bool IsOpen => isOpen;
 
     void Start()
     {
-        if (animator == null) animator = GetComponentInChildren<Animator>();
-        if (animator == null) animator = GetComponentInParent<Animator>();
-        if (animator == null) Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponentInParent<Animator>();
+        }
+
+        if (animator == null)
+        {
+            Debug.LogWarning("DoorInteractable: no Animator found on " + name, this);
+        }
     }
 
     public string GetPrompt()
@@ -47,8 +64,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
                         : "Locked";
 
                 case LockType.Key:
-                    bool hasKey = InventoryManager.Instance != null
-                                  && InventoryManager.Instance.HasItem(requiredKeyType);
+                    bool hasKey = InventoryManager.Instance != null && InventoryManager.Instance.HasItem(requiredKeyType);
                     return hasKey
                         ? "Press F to unlock"
                         : "Locked - you need a key";
@@ -93,9 +109,9 @@ public class DoorInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        if (consumeKeyOnUnlock && Inventory.Instance != null)
+        if (consumeKeyOnUnlock && InventoryManager.Instance != null)
         {
-            Inventory.Instance.ConsumeItem(requiredKeyType, 1);
+            InventoryManager.Instance.RemoveItem(requiredKeyType, 1);
         }
 
         Unlock();
@@ -103,7 +119,10 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
     private void ToggleDoor()
     {
-        if (animator == null) return;
+        if (animator == null)
+        {
+            return;
+        }
 
         isOpen = !isOpen;
         animator.SetBool("IsOpen", isOpen);
@@ -113,5 +132,23 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     {
         isUnlocked = true;
         ToggleDoor();
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
+    }
+
+    public void ApplySavedState(bool unlocked, bool open)
+    {
+        isUnlocked = unlocked;
+        isOpen = open;
+
+        if (animator == null)
+        {
+            return;
+        }
+
+        animator.SetBool("IsOpen", open);
+        animator.Play(open ? openStateName : closedStateName, 0, 1f); //Jump straight to the end of the clip so the door doesn't animate on load
     }
 }

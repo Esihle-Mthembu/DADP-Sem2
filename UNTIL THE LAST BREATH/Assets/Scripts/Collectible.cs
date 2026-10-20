@@ -1,58 +1,55 @@
 using UnityEngine;
+using InventorySystem;
 
-namespace InventorySystem
+public class Collectible : MonoBehaviour, IInteractable
 {
-    [RequireComponent(typeof(Collider))]
-    public class Collectible : MonoBehaviour
+    public ItemType itemType = ItemType.Key;
+    public int amount = 1;
+    public string itemName = "item";
+    public string pickupID; // Unique per object
+
+    void Start()
     {
-        [SerializeField] private ItemType itemType;
-        [SerializeField] private int amount = 1;
-        [SerializeField] private string playerTag = "Player";
-
-        private bool _collected;
-
-        private void Reset()
+        //Remove it from the world if already collected in previous gameplay
+        var sm = SaveManager.Instance;
+        if (sm != null && !string.IsNullOrEmpty(pickupID) && sm.Current.collectedItems.Contains(pickupID))
         {
-            var col = GetComponent<Collider>();
-            if (col != null)
-            {
-                col.isTrigger = true;
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (_collected)
-            {
-                return;
-            }
-
-            if (!other.CompareTag(playerTag))
-            {
-                return;
-            }
-
-            TryCollect();
-        }
-
-        private void TryCollect()
-        {
-            if (InventoryManager.Instance == null)
-            {
-                Debug.LogWarning("[Colectible] No InventoryManager found in scene");
-                return;
-            }
-
-            int added = InventoryManager.Instance.TryAddItem(itemType, amount);
-
-            if (added <= 0)
-            {
-                return;
-            }
-
-            _collected = true;
-
             Destroy(gameObject);
         }
+    }
+
+    public string GetPrompt()
+    {
+        if (InventoryManager.Instance != null && InventoryManager.Instance.IsFull(itemType))
+        {
+            return "Inventory full";
+        }
+
+        return "Press E to pick up " + itemName;
+    }
+
+    public void Interact() { }
+
+    // Called by FPController when E is pressed
+    public void Collect()
+    {
+        if (InventoryManager.Instance == null)
+        {
+            return;
+        }
+
+        int added = InventoryManager.Instance.TryAddItem(itemType, amount);
+        if (added <= 0)
+        {
+            return;
+        }
+
+        var sm = SaveManager.Instance;
+        if (sm != null && !string.IsNullOrEmpty(pickupID) && !sm.Current.collectedItems.Contains(pickupID))
+        {
+            sm.Current.collectedItems.Add(pickupID);
+        }
+
+        Destroy(gameObject);
     }
 }

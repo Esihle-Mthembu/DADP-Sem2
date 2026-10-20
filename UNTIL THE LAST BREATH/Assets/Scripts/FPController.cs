@@ -26,6 +26,7 @@ public class FPController : MonoBehaviour
 
     [Header("PickUp settings")]
     public float pickupRange = 20f;
+    public float collectRange = 20f;
     public Transform holdPos;
     public LayerMask pickupMask = ~0;
     private PickUp heldObject;
@@ -39,6 +40,22 @@ public class FPController : MonoBehaviour
     private Vector2 lookInput;
     private Vector3 velocity;
     private float verticalRotation = 0f;
+    public float Pitch => verticalRotation;
+
+    public void SetPitch(float pitch)
+    {
+        verticalRotation = Mathf.Clamp(pitch, -verticalLookLimit, verticalLookLimit);
+        cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+    }
+
+    // Called by the SaveManager script to put a saved object back in the player's hand
+    public void RestoreHeld(PickUp pickUp)
+    {
+        if (pickUp == null || heldObject != null) return;
+
+        pickUp.PickUpObject(holdPos, controller);
+        heldObject = pickUp;
+    }
 
     private void Awake()
     {
@@ -151,18 +168,27 @@ public class FPController : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, pickupMask))
             {
-                if (hit.collider.CompareTag("Pickup"))
+                // Inventory items (Key, File, Torch)
+                var collectible = hit.collider.GetComponentInParent<Collectible>();
+                if (collectible != null)
                 {
-                    PickUp pickUp = hit.collider.GetComponent<PickUp>();
-                    if (pickUp != null)
+                    if (hit.distance <= collectRange)
                     {
-                        pickUp.PickUpObject(holdPos, controller);
-                        heldObject = pickUp;
+                        collectible.Collect();
                     }
-                    else
-                    {
-                        Debug.Log("Object has PickUp tag but no component");
-                    }
+                    return;
+                }
+
+                // Carried objects
+                PickUp pickUp = hit.collider.GetComponentInParent<PickUp>();
+                if (pickUp != null)
+                {
+                    pickUp.PickUpObject(holdPos, controller);
+                    heldObject = pickUp;
+                }
+                else if (hit.collider.CompareTag("Pickup"))
+                {
+                    Debug.Log("Tagged Pickup but no PickUp script on or above: " + hit.collider.name, hit.collider);
                 }
             }
             else

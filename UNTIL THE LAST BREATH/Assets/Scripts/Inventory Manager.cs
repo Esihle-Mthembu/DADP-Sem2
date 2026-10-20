@@ -19,10 +19,9 @@ namespace InventorySystem
         [SerializeField]
         private List<ItemLimit> itemLimits = new List<ItemLimit>
         {
-            new ItemLimit { type = ItemType.File,         maxCount = 1 },
+            new ItemLimit { type = ItemType.File,         maxCount = 3 },
             new ItemLimit { type = ItemType.Key,          maxCount = 3 },
             new ItemLimit { type = ItemType.Torch,        maxCount = 1 },
-            new ItemLimit { type = ItemType.TorchBattery, maxCount = 3 },
         };
 
         private readonly Dictionary<ItemType, int> _maxCounts = new Dictionary<ItemType, int>();
@@ -62,7 +61,9 @@ namespace InventorySystem
             int space = max - current;
 
             if (space <= 0)
+            {
                 return 0;
+            }
 
             int amountAdded = Mathf.Min(space, amount);
             _currentCounts[type] = current + amountAdded;
@@ -74,6 +75,25 @@ namespace InventorySystem
             }
 
             return amountAdded;
+        }
+
+        public void SetCount(ItemType type, int count)
+        {
+            if (!_maxCounts.ContainsKey(type))
+            {
+                return;
+            }
+
+            _currentCounts[type] = Mathf.Clamp(count, 0, _maxCounts[type]);
+            OnItemChanged?.Invoke(type, _currentCounts[type], _maxCounts[type]);
+        }
+
+        public void ResetAll()
+        {
+            foreach (var type in new List<ItemType>(_maxCounts.Keys))
+            {
+                SetCount(type, 0);
+            }
         }
 
         public int RemoveItem(ItemType type, int amount = 1)
