@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using InventorySystem;
 
 public class SaveManager : MonoBehaviour
 {
@@ -30,6 +31,15 @@ public class SaveManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Bootstrap()
+    {
+        if (Instance == null)
+        {
+            new GameObject("SaveManager").AddComponent<SaveManager>();
+        }
+    }
+
     void OnDestroy()
     {
         if (Instance == this)
@@ -45,6 +55,11 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(SavePath))
         {
             File.Delete(SavePath);
+        }
+
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ResetAll();
         }
 
         Current = new SaveData();
@@ -77,11 +92,10 @@ public class SaveManager : MonoBehaviour
         Current.playerPosition = player.transform.position;
         Current.playerYaw = player.transform.eulerAngles.y;
 
-        var cam = Camera.main;
-
-        if (cam != null)
+        var fp = player.GetComponent<FPController>();
+        if (fp != null)
         {
-            Current.cameraPitch = cam.transform.localEulerAngles.x;
+            Current.cameraPitch = fp.Pitch;
         }
 
         Current.doors.Clear();
@@ -92,6 +106,36 @@ public class SaveManager : MonoBehaviour
                 id = door.doorID,
                 isUnlocked = door.isUnlocked,
                 isOpen = door.IsOpen
+            });
+        }
+
+        Current.inventory.Clear();
+        if (InventoryManager.Instance != null)
+        {
+            foreach (var type in InventoryManager.Instance.AllTypes)
+            {
+                int count = InventoryManager.Instance.GetCount(type);
+                if (count > 0)
+                {
+                    Current.inventory.Add(new InventorySaveEntry { itemType = type.ToString(), count = count });
+                }
+            }
+        }
+
+        Current.pickUps.Clear();
+        foreach (var p in FindObjectsByType<PickUp>(FindObjectsSortMode.None))
+        {
+            if (string.IsNullOrEmpty(p.pickupID))
+            {
+                continue;
+            }
+
+            Current.pickUps.Add(new PickUpSaveData
+            {
+                id = p.pickupID,
+                position = p.transform.position,
+                rotation = p.transform.rotation,
+                wasHeld = p.IsHeld
             });
         }
 
@@ -140,6 +184,12 @@ public class SaveManager : MonoBehaviour
             {
                 cc.enabled = true;
             }
+
+            var fp = player.GetComponent<FPController>();
+            if (fp != null)
+            {
+                fp.SetPitch(data.cameraPitch);
+            }
         }
 
         foreach (var door in FindObjectsByType<DoorInteractable>(FindObjectsSortMode.None))
@@ -149,6 +199,37 @@ public class SaveManager : MonoBehaviour
             {
                 door.ApplySavedState(saved.isUnlocked, saved.isOpen);
             }
-        } 
+        }
+
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.ResetAll();
+            foreach (var entry in data.inventory)
+            {
+                if (System.Enum.TryParse(entry.itemType, out ItemType type))
+                {
+                    InventoryManager.Instance.SetCount(type, entry.count);
+                }
+            }
+        }
+
+        var playerFP = player != null ? player.GetComponent<FPController>() : null;
+
+        foreach (var p in FindObjectsByType<PickUp>(FindObjectsSortMode.None))
+        {
+            var saved = data.pickUps.Find(s => s.id == p.pickupID);
+
+            if (saved == null)
+            {
+                continue;
+            }
+
+            p.transform.SetPositionAndRotation(saved.position, saved.rotation);
+
+            if (saved.wasHeld && playerFP != null)
+            {
+                playerFP.RestoreHeld(p);
+            }
+        }
     }
 }

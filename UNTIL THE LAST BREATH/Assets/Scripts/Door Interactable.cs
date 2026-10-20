@@ -21,13 +21,13 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
+    [Header("Save/Load")]
     public string doorID; // Unique per door, used for saving/loading
-    private bool isOpen = false;
-    public bool IsOpen => isOpen;
-
-    [Header("Save/Load (Animator state names)")]
     [SerializeField] string openStateName = "Open";
     [SerializeField] string closedStateName = "Closed";
+
+    private bool isOpen = false;
+    public bool IsOpen => isOpen;
 
     void Start()
     {
@@ -64,8 +64,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
                         : "Locked";
 
                 case LockType.Key:
-                    bool hasKey = InventoryManager.Instance != null
-                                  && InventoryManager.Instance.HasItem(requiredKeyType);
+                    bool hasKey = InventoryManager.Instance != null && InventoryManager.Instance.HasItem(requiredKeyType);
                     return hasKey
                         ? "Press F to unlock"
                         : "Locked - you need a key";
@@ -110,9 +109,9 @@ public class DoorInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        if (consumeKeyOnUnlock && Inventory.Instance != null)
+        if (consumeKeyOnUnlock && InventoryManager.Instance != null)
         {
-            Inventory.Instance.ConsumeItem(requiredKeyType, 1);
+            InventoryManager.Instance.RemoveItem(requiredKeyType, 1);
         }
 
         Unlock();

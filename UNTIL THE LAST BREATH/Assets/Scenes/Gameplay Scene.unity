@@ -7277,6 +7277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: 
 --- !u!54 &132296944
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7388,7 +7389,6 @@ MonoBehaviour:
   - {fileID: 1742610613}
   - {fileID: 576303443}
   - {fileID: 2040264598}
-  - {fileID: 0}
   pauseGameWhileOpen: 1
   lockCursorWhileClosed: 1
   shortcutKey: 3
@@ -8272,6 +8272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: File_Entrance1
 --- !u!54 &223557543
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8758,9 +8759,10 @@ GameObject:
   - component: {fileID: 313024117}
   - component: {fileID: 313024116}
   - component: {fileID: 313024119}
+  - component: {fileID: 313024120}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Pickup
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8849,6 +8851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: File_Entrance3
 --- !u!54 &313024117
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8891,7 +8894,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8910,6 +8913,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
   promptText: Press E to pickup file.
+--- !u!114 &313024120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313024112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61cbe20a66de72a4aa293b84316fcebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventorySystem.Collectible
+  itemType: 0
+  amount: 1
+  itemName: File_Entrance3
+  pickupID: File_Entrance3
 --- !u!1 &319676656
 GameObject:
   m_ObjectHideFlags: 0
@@ -18145,6 +18164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: 
 --- !u!54 &837383581
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19650,6 +19670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: 
 --- !u!54 &994959080
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19725,6 +19746,7 @@ GameObject:
   - component: {fileID: 1000375954}
   - component: {fileID: 1000375953}
   - component: {fileID: 1000375955}
+  - component: {fileID: 1000375956}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Pickup
@@ -19741,7 +19763,7 @@ Transform:
   m_GameObject: {fileID: 1000375949}
   serializedVersion: 2
   m_LocalRotation: {x: -0.61826754, y: 0.64148235, z: -0.31326297, w: 0.32880384}
-  m_LocalPosition: {x: 32.7654, y: 0.480139, z: -0.202}
+  m_LocalPosition: {x: 28.06, y: 0.45, z: 3.21}
   m_LocalScale: {x: 4.0561376, y: 270.6551, z: 162.92064}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19865,6 +19887,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
   promptText: Press E to pickup file.
+--- !u!114 &1000375956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000375949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: File_Entrance2
 --- !u!1 &1012987562
 GameObject:
   m_ObjectHideFlags: 0
@@ -21692,7 +21727,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Progressed saved.
+  m_text: Progress saved
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -25538,6 +25573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: 
 --- !u!54 &1561538717
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25909,6 +25945,7 @@ MonoBehaviour:
   originalHeight: 3
   crouchHeight: 1.5
   pickupRange: 10
+  collectRange: 20
   holdPos: {fileID: 1802857290}
   pickupMask:
     serializedVersion: 2
@@ -42115,6 +42152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: 
 --- !u!54 &2097531202
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -42578,7 +42616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 543450652645157676}
   m_Layer: 0
-  m_Name: door  (1)
+  m_Name: Door_Entrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

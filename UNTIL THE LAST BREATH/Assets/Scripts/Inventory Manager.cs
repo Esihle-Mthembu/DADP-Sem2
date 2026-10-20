@@ -61,7 +61,9 @@ namespace InventorySystem
             int space = max - current;
 
             if (space <= 0)
+            {
                 return 0;
+            }
 
             int amountAdded = Mathf.Min(space, amount);
             _currentCounts[type] = current + amountAdded;
@@ -73,6 +75,25 @@ namespace InventorySystem
             }
 
             return amountAdded;
+        }
+
+        public void SetCount(ItemType type, int count)
+        {
+            if (!_maxCounts.ContainsKey(type))
+            {
+                return;
+            }
+
+            _currentCounts[type] = Mathf.Clamp(count, 0, _maxCounts[type]);
+            OnItemChanged?.Invoke(type, _currentCounts[type], _maxCounts[type]);
+        }
+
+        public void ResetAll()
+        {
+            foreach (var type in new List<ItemType>(_maxCounts.Keys))
+            {
+                SetCount(type, 0);
+            }
         }
 
         public int RemoveItem(ItemType type, int amount = 1)
