@@ -1,29 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class Flashlight : MonoBehaviour
 {
-    [SerializeField] GameObject FlashlightLight;
-    private bool FlashlightActive = false;
+    [SerializeField] Light flashlightLight;
+    [SerializeField] KeyCode toggleKey = KeyCode.L;
+
+    void Awake()
+    {
+        // If the slot is empty, use the Light on this same object
+        if (flashlightLight == null)
+            flashlightLight = GetComponent<Light>();
+    }
+
     void Start()
     {
-        FlashlightLight.SetActive(false);
+        if (flashlightLight == null)
+        {
+            Debug.LogError("Flashlight: no Light assigned!", this);
+            return;
+        }
+        flashlightLight.enabled = false;
     }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (flashlightLight == null) return;
+
+        if (TogglePressed())
         {
-            if (FlashlightActive == false)
-            {
-                FlashlightLight.SetActive(true);
-                FlashlightActive = true;
-            }
-            else
-            {
-                FlashlightLight.SetActive(false);
-                FlashlightActive = false;
-            }
+            Debug.Log("L pressed");
+            flashlightLight.enabled = !flashlightLight.enabled;
         }
+    }
+
+    bool TogglePressed()
+    {
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+        return Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame;
+#else
+        return Input.GetKeyDown(toggleKey);
+#endif
     }
 }
