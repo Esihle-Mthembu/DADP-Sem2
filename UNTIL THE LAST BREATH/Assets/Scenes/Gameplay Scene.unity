@@ -45158,7 +45158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dde957db312c8e4fa5e20cc0ffffb76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorInteractable
-  lockType: 2
+  lockType: 1
   isUnlocked: 0
   requiredKeyType: 1
   consumeKeyOnUnlock: 0
