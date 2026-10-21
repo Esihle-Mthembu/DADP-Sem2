@@ -93,6 +93,7 @@ public class SaveManager : MonoBehaviour
         Current.playerYaw = player.transform.eulerAngles.y;
 
         var fp = player.GetComponent<FPController>();
+
         if (fp != null)
         {
             Current.cameraPitch = fp.Pitch;
@@ -115,6 +116,7 @@ public class SaveManager : MonoBehaviour
             foreach (var type in InventoryManager.Instance.AllTypes)
             {
                 int count = InventoryManager.Instance.GetCount(type);
+
                 if (count > 0)
                 {
                     Current.inventory.Add(new InventorySaveEntry { itemType = type.ToString(), count = count });
@@ -169,6 +171,7 @@ public class SaveManager : MonoBehaviour
         yield return null;
 
         var player = GameObject.FindGameObjectWithTag(playerTag);
+
         if (player != null)
         {
             var cc = player.GetComponent<CharacterController>();

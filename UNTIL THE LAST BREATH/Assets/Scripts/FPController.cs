@@ -52,7 +52,10 @@ public class FPController : MonoBehaviour
     // Called by the SaveManager script to put a saved object back in the player's hand
     public void RestoreHeld(PickUp pickUp)
     {
-        if (pickUp == null || heldObject != null) return;
+        if (pickUp == null || heldObject != null)
+        {
+            return;
+        }
 
         pickUp.PickUpObject(holdPos, controller);
         heldObject = pickUp;
