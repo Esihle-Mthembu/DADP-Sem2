@@ -548,7 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
   text: {fileID: 0}
-  glowColor: {r: 0, g: 0.5450981, b: 0.5450981, a: 1}
+  glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
   fadeSpeed: 10
@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
   text: {fileID: 0}
-  glowColor: {r: 0, g: 0.5450981, b: 0.5450981, a: 1}
+  glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
   fadeSpeed: 10
@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
   text: {fileID: 0}
-  glowColor: {r: 0, g: 0.5450981, b: 0.5450981, a: 1}
+  glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
   fadeSpeed: 10
@@ -1767,14 +1767,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 08d1d98d560449f4b803af2281ffb545, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1976,6 +1976,46 @@ PrefabInstance:
     - target: {fileID: 829716948687653093, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 929835688152060106, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.5607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 929835688152060106, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.7372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 929835688152060106, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.5607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.5607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.7372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.5607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0.5607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.7372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924617752067825958, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.5607843
       objectReference: {fileID: 0}
     - target: {fileID: 8227674389093156664, guid: 5b3ce19d14823024395a1e40aba899e0, type: 3}
       propertyPath: m_Name
@@ -2467,7 +2507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
   text: {fileID: 0}
-  glowColor: {r: 0, g: 0.5450981, b: 0.5450981, a: 1}
+  glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.6
   fadeSpeed: 10
@@ -2510,7 +2550,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -417, y: -14}
+  m_AnchoredPosition: {x: -817, y: -14}
   m_SizeDelta: {x: 700, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1788957019
