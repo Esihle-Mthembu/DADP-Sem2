@@ -45064,7 +45064,7 @@ MonoBehaviour:
   - {fileID: 2036507706}
   - {fileID: 1906374409}
   shuffleOnEnable: 1
-  shuffleSwaps: 18
+  shuffleSwaps: 20
 --- !u!1 &1869029340
 GameObject:
   m_ObjectHideFlags: 0
