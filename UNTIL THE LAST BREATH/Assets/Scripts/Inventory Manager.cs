@@ -15,7 +15,7 @@ namespace InventorySystem
             public int maxCount;
         }
 
-        [Tooltip("Set the maximum amount the player can carry of each item type.")]
+        [Tooltip("Set the maximum amount the player can carry of each item type")]
         [SerializeField]
         private List<ItemLimit> itemLimits = new List<ItemLimit>
         {
