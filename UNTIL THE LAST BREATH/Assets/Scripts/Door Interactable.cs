@@ -81,20 +81,12 @@ public class DoorInteractable : MonoBehaviour, IInteractable
             switch (lockType)
             {
                 case LockType.Pin:
-                    if (linkedPinPad != null)
-                    {
-                        linkedPinPad.Open(this);
-                    }
-
+                    if (linkedPinPad != null) linkedPinPad.Open(this);
                     else Debug.LogWarning("DoorInteractable: Pin lock but no PinPadUI assigned on " + name, this);
                     return;
 
                 case LockType.Puzzle:
-                    if (linkedPuzzleLock != null)
-                    {
-                        linkedPuzzleLock.Open(this);
-                    }
-
+                    if (linkedPuzzleLock != null) linkedPuzzleLock.Open(this);
                     else Debug.LogWarning("DoorInteractable: Puzzle lock but no PuzzleLockUI assigned on " + name, this);
                     return;
 

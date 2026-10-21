@@ -123,61 +123,11 @@ public class PinPadUI : MonoBehaviour
         }
     }
 
-    private static readonly Key[] digitKeys =
-    {
-    Key.Digit0, Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8, Key.Digit9
-    };
-
-    private static readonly Key[] numpadKeys =
-    {
-    Key.Numpad0, Key.Numpad1, Key.Numpad2, Key.Numpad3, Key.Numpad4, Key.Numpad5, Key.Numpad6, Key.Numpad7, Key.Numpad8, Key.Numpad9
-    };
-
     void Update()
     {
-        if (panelRoot == null || !panelRoot.activeSelf)
-        {
-            return;
-        }
-
-        var kb = Keyboard.current;
-        if (kb == null)
-        {
-            return;
-        }
-
-        if (kb.altKey.wasPressedThisFrame)
+        if (panelRoot != null && panelRoot.activeSelf && Keyboard.current != null && Keyboard.current.altKey.wasPressedThisFrame)
         {
             Close();
-            return;
-        }
-
-        for (int i = 0; i <= 9; i++)
-        {
-            if (kb[digitKeys[i]].wasPressedThisFrame || kb[numpadKeys[i]].wasPressedThisFrame)
-            {
-                OnDigitPressed(i);
-            }
-        }
-
-        if (kb.backspaceKey.wasPressedThisFrame)
-        {
-            OnBackspace();
-        }
-    }
-
-    public void OnBackspace()
-    {
-        if (enteredDigits.Length == 0)
-        {
-            return;
-        }
-
-        enteredDigits = enteredDigits.Substring(0, enteredDigits.Length - 1);
-        UpdateDisplay();
-        if (feedbackText != null)
-        {
-            feedbackText.text = "";
         }
     }
 }

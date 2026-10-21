@@ -7,7 +7,7 @@ public class PuzzleLockUI : MonoBehaviour
     [SerializeField] private GameObject puzzleCanvas;
     [SerializeField] private PuzzleGridController puzzleGrid;
 
-    [Header("Player control lock")]
+    [Header("Player Control Lock (assign your FP scripts)")]
     [SerializeField] private MonoBehaviour[] scriptsToDisableWhileSolving;
 
     [Header("Cursor")]
@@ -18,15 +18,8 @@ public class PuzzleLockUI : MonoBehaviour
 
     private void Awake()
     {
-        if (puzzleCanvas != null)
-        {
-            puzzleCanvas.SetActive(false);
-        }
-
-        if (puzzleGrid != null)
-        {
-            puzzleGrid.OnSolved += HandleSolved;
-        }
+        if (puzzleCanvas != null) puzzleCanvas.SetActive(false);
+        if (puzzleGrid != null) puzzleGrid.OnSolved += HandleSolved;
     }
 
     public void Open(DoorInteractable door)
@@ -64,11 +57,7 @@ public class PuzzleLockUI : MonoBehaviour
     private void SetPlayerControlEnabled(bool enabled)
     {
         foreach (var script in scriptsToDisableWhileSolving)
-
-            if (script != null)
-            {
-                script.enabled = enabled;
-            }
+            if (script != null) script.enabled = enabled;
     }
 
     private void HandleSolved()

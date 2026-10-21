@@ -153,7 +153,7 @@ public class DialogueManager : MonoBehaviour
         if (!dialogueActive)
             return;
 
-        Debug.Log("Dialogue input detected");
+        Debug.Log("Dialogue input detected!");
 
         if (isTyping)
         {
@@ -233,7 +233,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ScreenFader not found in scene, loading directly");
+            Debug.LogWarning("ScreenFader not found in scene, loading directly.");
             SceneManager.LoadScene(nextSceneName);
         }
     }
