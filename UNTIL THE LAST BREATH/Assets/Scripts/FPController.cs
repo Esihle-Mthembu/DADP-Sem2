@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class FPController : MonoBehaviour
 {
     [Header("Movement settings")]
-    public float moveSpeed = 6f;
+    public float moveSpeed = 7f;
     public float gravity = -9.81f;
     public float jumpHeight = 0.7f;
 
@@ -72,6 +72,11 @@ public class FPController : MonoBehaviour
 
     void Update()
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
         HandleMovement();
         HandleLook();
 
@@ -151,6 +156,11 @@ public class FPController : MonoBehaviour
     // Jump (Spacebar)
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
         if (context.performed && controller.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -175,6 +185,11 @@ public class FPController : MonoBehaviour
     // Pick Up (E)
     public void OnPickUp(InputAction.CallbackContext context)
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
         if (InventorySystem.InventoryUI.IsOpen)
         {
             return;
@@ -242,8 +257,20 @@ public class FPController : MonoBehaviour
     // Throw (T)
     public void OnThrow(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (heldObject == null) return;
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (heldObject == null)
+        {
+            return;
+        }
 
         Vector3 dir = cameraTransform.forward;
         Vector3 impulse = dir * throwForce + Vector3.up * throwUpwardBoost;

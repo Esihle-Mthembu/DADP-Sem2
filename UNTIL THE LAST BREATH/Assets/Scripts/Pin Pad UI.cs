@@ -15,11 +15,11 @@ public class PinPadUI : MonoBehaviour
     public TMP_Text feedbackText;      
     public float wrongPinResetDelay = 0.6f;
 
-    [Header("Player Control")]
-    public MonoBehaviour playerInputScript; 
-
     private string enteredDigits = "";
     private DoorInteractable currentDoor;
+    private bool isOpen = false;
+
+    public bool IsOpen => isOpen;
 
     void Awake()
     {
@@ -28,45 +28,49 @@ public class PinPadUI : MonoBehaviour
 
     public void Open(DoorInteractable door)
     {
+        if (isOpen) return;
+        isOpen = true;
+
         currentDoor = door;
         enteredDigits = "";
         UpdateDisplay();
-        
+
         if (feedbackText != null)
         {
             feedbackText.text = "";
         }
 
         panelRoot.SetActive(true);
-
-        if (playerInputScript != null)
-        {
-            playerInputScript.enabled = false;
-        }
-
-            Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        UIState.Push();
     }
 
     public void Close()
     {
-        Debug.Log("Close pressed");
+        if (!isOpen) return;
+        CancelInvoke();
 
+        isOpen = false;
         panelRoot.SetActive(false);
         currentDoor = null;
 
-        if (playerInputScript != null)
-        {
-            playerInputScript.enabled = true;
-        }
+        UIState.Pop();
+    }
 
-            Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+    private void OnDestroy()
+    {
+        if (isOpen)
+        {
+            isOpen = false;
+            UIState.Pop();
+        }
     }
 
     public void OnDigitPressed(int digit)
     {
-        if (enteredDigits.Length >= pinLength) return;
+        if (enteredDigits.Length >= pinLength)
+        {
+            return;
+        }
 
         enteredDigits += digit.ToString();
         UpdateDisplay();
@@ -135,7 +139,7 @@ public class PinPadUI : MonoBehaviour
 
     void Update()
     {
-        if (panelRoot == null || !panelRoot.activeSelf)
+        if (!isOpen)
         {
             return;
         }
@@ -146,7 +150,7 @@ public class PinPadUI : MonoBehaviour
             return;
         }
 
-        if (kb.altKey.wasPressedThisFrame)
+        if (kb.altKey.wasPressedThisFrame || kb.escapeKey.wasPressedThisFrame)
         {
             Close();
             return;

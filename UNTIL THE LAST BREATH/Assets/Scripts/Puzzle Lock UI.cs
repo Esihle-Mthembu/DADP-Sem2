@@ -7,14 +7,10 @@ public class PuzzleLockUI : MonoBehaviour
     [SerializeField] private GameObject puzzleCanvas;
     [SerializeField] private PuzzleGridController puzzleGrid;
 
-    [Header("Player control lock")]
-    [SerializeField] private MonoBehaviour[] scriptsToDisableWhileSolving;
-
-    [Header("Cursor")]
-    [SerializeField] private bool lockCursorWhileOpen = true;
-
     private DoorInteractable currentDoor;
     private bool isOpen = false;
+
+    public bool IsOpen => isOpen;
 
     private void Awake()
     {
@@ -29,52 +25,51 @@ public class PuzzleLockUI : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (puzzleGrid != null)
+        {
+            puzzleGrid.OnSolved -= HandleSolved;
+        }
+
+        if (isOpen) 
+        { 
+            isOpen = false; UIState.Pop(); 
+        }
+    }
+
     public void Open(DoorInteractable door)
     {
+        if (isOpen)
+        {
+            return;
+        }
+
         currentDoor = door;
         isOpen = true;
 
         puzzleCanvas.SetActive(true);
         puzzleGrid.enabled = true;
 
-        if (lockCursorWhileOpen)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        SetPlayerControlEnabled(false);
+        UIState.Push();
     }
 
     public void Close()
     {
+        if (!isOpen) return;  
+        CancelInvoke(nameof(Close));
+
         isOpen = false;
         puzzleCanvas.SetActive(false);
         currentDoor = null;
 
-        if (lockCursorWhileOpen)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
-        SetPlayerControlEnabled(true);
-    }
-
-    private void SetPlayerControlEnabled(bool enabled)
-    {
-        foreach (var script in scriptsToDisableWhileSolving)
-
-            if (script != null)
-            {
-                script.enabled = enabled;
-            }
+        UIState.Pop();
     }
 
     private void HandleSolved()
     {
         currentDoor?.Unlock();
-        Invoke(nameof(Close), 1f); // let the player see the completed picture
+        Invoke(nameof(Close), 1f);
     }
 
     private void Update()
@@ -82,15 +77,6 @@ public class PuzzleLockUI : MonoBehaviour
         if (isOpen && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             Close();
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (isOpen && lockCursorWhileOpen)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
     }
 }
