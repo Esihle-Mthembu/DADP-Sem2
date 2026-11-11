@@ -34017,8 +34017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -281.55, y: -8.9525}
-  m_SizeDelta: {x: 515.09, y: 873.91}
+  m_AnchoredPosition: {x: -292.40717, y: -8.9525}
+  m_SizeDelta: {x: 536.8046, y: 873.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1129654099
 GameObject:
@@ -39951,7 +39951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FPController
   moveSpeed: 10
   gravity: -9.81
-  jumpHeight: 4
+  jumpHeight: 0.7
   cameraTransform: {fileID: 1780056410}
   lookSensitivity: 1.5
   mouseDeltaScale: 0.1

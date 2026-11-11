@@ -6,7 +6,7 @@ public class FPController : MonoBehaviour
     [Header("Movement settings")]
     public float moveSpeed = 6f;
     public float gravity = -9.81f;
-    public float jumpHeight = 2f;
+    public float jumpHeight = 0.7f;
 
     [Header("Look settings")]
     public Transform cameraTransform;
@@ -103,7 +103,10 @@ public class FPController : MonoBehaviour
             currentSpeed = crouchSpeed;
         }
 
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        if (!InventorySystem.InventoryUI.IsOpen)
+        {
+            controller.Move(move * currentSpeed * Time.deltaTime);
+        }
 
         if (controller.isGrounded && velocity.y < 0)
         {
@@ -117,6 +120,11 @@ public class FPController : MonoBehaviour
     // Look
     public void HandleLook()
     {
+        if (InventorySystem.InventoryUI.IsOpen)
+        {
+            return;
+        }
+
         float mouseX = lookInput.x * lookSensitivity * mouseDeltaScale;
         float mouseY = lookInput.y * lookSensitivity * mouseDeltaScale;
 
@@ -130,8 +138,14 @@ public class FPController : MonoBehaviour
     // Sprint (Shift)
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.performed) isSprinting = true;
-        else if (context.canceled) isSprinting = false;
+        if (context.performed)
+        {
+            isSprinting = true;
+        }
+        else if (context.canceled)
+        {
+            isSprinting = false;
+        }
     }
 
     // Jump (Spacebar)
@@ -139,7 +153,7 @@ public class FPController : MonoBehaviour
     {
         if (context.performed && controller.isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -3f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
@@ -161,6 +175,11 @@ public class FPController : MonoBehaviour
     // Pick Up (E)
     public void OnPickUp(InputAction.CallbackContext context)
     {
+        if (InventorySystem.InventoryUI.IsOpen)
+        {
+            return;
+        }
+
         if (!context.performed)
         {
             return;
