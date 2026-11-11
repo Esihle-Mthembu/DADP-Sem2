@@ -1118,10 +1118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e18841e974429a4d8724fd4b5c1bbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
-  text: {fileID: 0}
+  text: {fileID: 1438586624}
   glowColor: {r: 1, g: 1, b: 1, a: 1}
-  glowPower: 0.6
-  glowOuter: 0.5
+  glowPower: 1
+  glowOuter: 0.7
   fadeSpeed: 10
 --- !u!1 &1637009105
 GameObject:

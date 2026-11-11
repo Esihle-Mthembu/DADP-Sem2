@@ -29,6 +29,9 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     private bool isOpen = false;
     public bool IsOpen => isOpen;
 
+    public event System.Action StateChanged;
+    public bool IsLocked => lockType != LockType.None && !isUnlocked;
+
     void Start()
     {
         if (animator == null)
@@ -134,6 +137,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
         isOpen = !isOpen;
         animator.SetBool("IsOpen", isOpen);
+        StateChanged?.Invoke();
     }
 
     public void Unlock()
@@ -146,10 +150,44 @@ public class DoorInteractable : MonoBehaviour, IInteractable
         }
     }
 
+    //Called by the ghost, shuts the door and locks it again
+    public void ForceLock()
+    {
+        if (lockType == LockType.None) //No way for the player to unlock it again
+        {
+            return;
+        }
+
+        if (lockType == LockType.Key && consumeKeyOnUnlock) //Key is gone, so relocking traps the player
+        {
+            return;
+        }
+
+        if (!isUnlocked) //Already locked
+        {
+            return;
+        }
+
+        isUnlocked = false;
+        isOpen = false;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsOpen", false);   //Door swings shut
+        }
+        StateChanged?.Invoke();
+
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.Save();
+        }
+    }
+
     public void ApplySavedState(bool unlocked, bool open)
     {
         isUnlocked = unlocked;
         isOpen = open;
+        StateChanged?.Invoke();
 
         if (animator == null)
         {
