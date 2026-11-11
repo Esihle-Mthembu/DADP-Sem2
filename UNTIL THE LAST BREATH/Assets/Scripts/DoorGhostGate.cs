@@ -3,7 +3,7 @@ using UnityEngine;
 public class DoorGhostGate : MonoBehaviour
 {
     [SerializeField] DoorInteractable door;
-    [SerializeField] Collider[] doorColliders;   //Only the swinging door's solid collider(s)
+    [SerializeField] Collider[] doorColliders; //Only the swinging door's solid collider
 
     private float entrySide;
 
@@ -21,7 +21,7 @@ public class DoorGhostGate : MonoBehaviour
         }
     }
 
-    //The ghost passes only when the door is open and unlocked, otherwise the door blocks it.
+    //The ghost passes only when the door is open and unlocked, otherwise the door blocks it
     void Refresh()
     {
         if (Ghost.Instance == null)

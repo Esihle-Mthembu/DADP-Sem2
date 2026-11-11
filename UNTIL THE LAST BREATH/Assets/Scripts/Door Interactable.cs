@@ -22,7 +22,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     public PuzzleLockUI linkedPuzzleLock;
 
     [Header("Save/Load")]
-    public string doorID; // Unique per door, used for saving/loading
+    public string doorID; //Unique per door, used for saving/loading
     [SerializeField] string openStateName = "Open";
     [SerializeField] string closedStateName = "Closed";
 
@@ -158,7 +158,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        if (lockType == LockType.Key && consumeKeyOnUnlock) //Key is gone, so relocking traps the player
+        if (lockType == LockType.Key && consumeKeyOnUnlock) //The key is gone, so relocking traps the player
         {
             return;
         }
