@@ -8,11 +8,16 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
 
+    public static bool IsLoadingSave => Instance != null && Instance.isApplyingLoad;
+
     [SerializeField] string fallbackSceneName = "Gameplay Scene";
     [SerializeField] string playerTag = "Player";
+    [SerializeField] float holdPositionSeconds = 0.4f;
 
     public SaveData Current = new SaveData();
     SaveData pendingLoad;
+    string pendingSceneName;
+    bool isApplyingLoad;
 
     public event System.Action OnSaved;
 
@@ -20,10 +25,10 @@ public class SaveManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null) 
-        { 
-            Destroy(gameObject); 
-            return; 
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
         }
 
         Instance = this;
@@ -64,6 +69,8 @@ public class SaveManager : MonoBehaviour
 
         Current = new SaveData();
         pendingLoad = null;
+        pendingSceneName = null;
+        isApplyingLoad = false;
     }
 
     public void Continue()
@@ -75,7 +82,8 @@ public class SaveManager : MonoBehaviour
 
         Current = JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath));
         pendingLoad = Current;
-        SceneManager.LoadScene(string.IsNullOrEmpty(Current.sceneName) ? fallbackSceneName : Current.sceneName);
+        pendingSceneName = string.IsNullOrEmpty(Current.sceneName) ? fallbackSceneName : Current.sceneName;
+        SceneManager.LoadScene(pendingSceneName);
     }
 
     //Saving
@@ -150,50 +158,61 @@ public class SaveManager : MonoBehaviour
         }
 
         File.Move(tmp, SavePath);
-        Debug.Log("Saved to " + SavePath);
+        Debug.Log("Saved to " + SavePath + " | player pos: " + Current.playerPosition);
         OnSaved?.Invoke();
     }
 
     //Loading scene
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (pendingLoad == null || scene.name != pendingLoad.sceneName)
+        if (pendingLoad == null || scene.name != pendingSceneName)
         {
             return;
         }
 
+        isApplyingLoad = true;
+
         StartCoroutine(ApplyNextFrame(pendingLoad));
         pendingLoad = null;
+        pendingSceneName = null;
+    }
+
+    void PlacePlayer(SaveData data)
+    {
+        var player = GameObject.FindGameObjectWithTag(playerTag);
+
+        if (player == null)
+        {
+            return;
+        }
+
+        var cc = player.GetComponent<CharacterController>();
+        if (cc)
+        {
+            cc.enabled = false;
+        }
+
+        player.transform.SetPositionAndRotation( data.playerPosition, Quaternion.Euler(0, data.playerYaw, 0));
+
+        if (cc)
+        {
+            cc.enabled = true;
+        }
+
+        var fp = player.GetComponent<FPController>();
+        if (fp != null)
+        {
+            fp.SetPitch(data.cameraPitch);
+        }
     }
 
     IEnumerator ApplyNextFrame(SaveData data)
     {
         yield return null;
 
+        PlacePlayer(data);
+
         var player = GameObject.FindGameObjectWithTag(playerTag);
-
-        if (player != null)
-        {
-            var cc = player.GetComponent<CharacterController>();
-            if (cc)
-            {
-                cc.enabled = false;
-            }
-
-            player.transform.SetPositionAndRotation(
-                data.playerPosition, Quaternion.Euler(0, data.playerYaw, 0));
-
-            if (cc)
-            {
-                cc.enabled = true;
-            }
-
-            var fp = player.GetComponent<FPController>();
-            if (fp != null)
-            {
-                fp.SetPitch(data.cameraPitch);
-            }
-        }
 
         foreach (var door in FindObjectsByType<DoorInteractable>(FindObjectsSortMode.None))
         {
@@ -234,5 +253,16 @@ public class SaveManager : MonoBehaviour
                 playerFP.RestoreHeld(p);
             }
         }
+
+        float t = 0f;
+        while (t < holdPositionSeconds)
+        {
+            yield return null;
+            PlacePlayer(data);
+            t += Time.unscaledDeltaTime;
+        }
+
+        isApplyingLoad = false;
+        Debug.Log("Load applied, player placed at " + data.playerPosition);
     }
 }

@@ -40104,7 +40104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5637f442752e1d74c93221ed279c7848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPController
-  moveSpeed: 7
+  moveSpeed: 8
   gravity: -9.81
   jumpHeight: 0.7
   cameraTransform: {fileID: 1780056410}
