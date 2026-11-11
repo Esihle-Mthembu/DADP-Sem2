@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e18841e974429a4d8724fd4b5c1bbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
-  text: {fileID: 0}
+  text: {fileID: 729590218}
   glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e18841e974429a4d8724fd4b5c1bbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
-  text: {fileID: 0}
+  text: {fileID: 713137973}
   glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e18841e974429a4d8724fd4b5c1bbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
-  text: {fileID: 0}
+  text: {fileID: 697874034}
   glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.5
@@ -2683,7 +2683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e18841e974429a4d8724fd4b5c1bbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTextGlow
-  text: {fileID: 0}
+  text: {fileID: 890242915}
   glowColor: {r: 0.5607843, g: 0.7372549, b: 0.5607843, a: 1}
   glowPower: 0.6
   glowOuter: 0.6
@@ -2826,7 +2826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f2c79f0c072c045a46343a6ca5b1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
-  continueButton: {fileID: 0}
+  continueButton: {fileID: 618499813}
 --- !u!4 &1810724452
 Transform:
   m_ObjectHideFlags: 0

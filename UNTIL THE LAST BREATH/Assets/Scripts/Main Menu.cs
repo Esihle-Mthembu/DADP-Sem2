@@ -14,6 +14,8 @@ public class MainMenu : MonoBehaviour
     // New game button
     public void NewGame()
     {
+        ObjectivePopup.ResetShown();
+
         PlayerPrefs.DeleteAll();
         SaveManager.Instance.ResetSave();
         SceneManager.LoadScene("Intro Scene");
@@ -22,6 +24,7 @@ public class MainMenu : MonoBehaviour
     // Continue button
     public void ContinueGame()
     {
+        ObjectivePopup.hasShown = true;
         SaveManager.Instance.Continue();
     }
 
