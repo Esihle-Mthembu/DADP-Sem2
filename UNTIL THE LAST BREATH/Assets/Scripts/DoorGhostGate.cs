@@ -10,6 +10,12 @@ public class DoorGhostGate : MonoBehaviour
     void Start()
     {
         door.StateChanged += Refresh;
+        StartCoroutine(InitWhenGhostReady());
+    }
+
+    System.Collections.IEnumerator InitWhenGhostReady()
+    {
+        while (Ghost.Instance == null) yield return null;
         Refresh();
     }
 
