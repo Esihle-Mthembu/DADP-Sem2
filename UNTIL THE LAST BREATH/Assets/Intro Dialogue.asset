@@ -24,7 +24,7 @@ MonoBehaviour:
     dialogueText: Angela, a word-outside,please.
     backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
   - speakerName: ANGELA
-    dialogueText: Just tell me straight, Doctor. Whst's happening to her ?
+    dialogueText: Just tell me straight, Doctor. What's happening to her ?
     backgroundImage: {fileID: 21300000, guid: a0fe666ac2b9e3c449862dcce9053abc, type: 3}
   - speakerName: 'Dr Smith '
     dialogueText: Her condition isn't in any of our current medical records. But

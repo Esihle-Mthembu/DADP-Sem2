@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 public class FPController : MonoBehaviour
 {
     [Header("Movement settings")]
-    public float moveSpeed = 6f;
+    public float moveSpeed = 8f;
     public float gravity = -9.81f;
-    public float jumpHeight = 2f;
+    public float jumpHeight = 0.7f;
 
     [Header("Look settings")]
     public Transform cameraTransform;
@@ -34,7 +34,8 @@ public class FPController : MonoBehaviour
     [Header("Throw Settings")]
     public float throwForce = 15f;
     public float throwUpwardBoost = 4f;
-
+    [Header("Interact settings")]
+    public float interactRange = 5f;
     private CharacterController controller;
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -51,7 +52,10 @@ public class FPController : MonoBehaviour
     // Called by the SaveManager script to put a saved object back in the player's hand
     public void RestoreHeld(PickUp pickUp)
     {
-        if (pickUp == null || heldObject != null) return;
+        if (pickUp == null || heldObject != null)
+        {
+            return;
+        }
 
         pickUp.PickUpObject(holdPos, controller);
         heldObject = pickUp;
@@ -68,6 +72,11 @@ public class FPController : MonoBehaviour
 
     void Update()
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
         HandleMovement();
         HandleLook();
 
@@ -99,7 +108,10 @@ public class FPController : MonoBehaviour
             currentSpeed = crouchSpeed;
         }
 
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        if (!InventorySystem.InventoryUI.IsOpen)
+        {
+            controller.Move(move * currentSpeed * Time.deltaTime);
+        }
 
         if (controller.isGrounded && velocity.y < 0)
         {
@@ -113,6 +125,11 @@ public class FPController : MonoBehaviour
     // Look
     public void HandleLook()
     {
+        if (InventorySystem.InventoryUI.IsOpen)
+        {
+            return;
+        }
+
         float mouseX = lookInput.x * lookSensitivity * mouseDeltaScale;
         float mouseY = lookInput.y * lookSensitivity * mouseDeltaScale;
 
@@ -126,16 +143,27 @@ public class FPController : MonoBehaviour
     // Sprint (Shift)
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.performed) isSprinting = true;
-        else if (context.canceled) isSprinting = false;
+        if (context.performed)
+        {
+            isSprinting = true;
+        }
+        else if (context.canceled)
+        {
+            isSprinting = false;
+        }
     }
 
     // Jump (Spacebar)
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
         if (context.performed && controller.isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -3f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
@@ -157,9 +185,32 @@ public class FPController : MonoBehaviour
     // Pick Up (E)
     public void OnPickUp(InputAction.CallbackContext context)
     {
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
+        if (InventorySystem.InventoryUI.IsOpen)
+        {
+            return;
+        }
+
         if (!context.performed)
         {
             return;
+        }
+        if (heldObject == null)
+        {
+            Ray buttonRay = new Ray(cameraTransform.position, cameraTransform.forward);
+            if (Physics.Raycast(buttonRay, out RaycastHit buttonHit, interactRange))
+            {
+                ElevatorButton button = buttonHit.collider.GetComponentInParent<ElevatorButton>();
+                if (button != null)
+                {
+                    button.Press();
+                    return;
+                }
+            }
         }
 
         if (heldObject == null)
@@ -206,8 +257,20 @@ public class FPController : MonoBehaviour
     // Throw (T)
     public void OnThrow(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (heldObject == null) return;
+        if (UIState.IsBlocked)
+        {
+            return;
+        }
+
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (heldObject == null)
+        {
+            return;
+        }
 
         Vector3 dir = cameraTransform.forward;
         Vector3 impulse = dir * throwForce + Vector3.up * throwUpwardBoost;

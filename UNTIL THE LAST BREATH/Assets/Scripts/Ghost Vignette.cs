@@ -10,7 +10,7 @@ public class GhostVignette : MonoBehaviour
     [SerializeField] float pulseSpeed = 6f;
     [SerializeField] float pulseAmount = 0.08f;
 
-    [Header("Optional cloud overlay")]
+    [Header("Cloud overlay")]
     [SerializeField] RectTransform cloudOverlay;
     [SerializeField] CanvasGroup cloudGroup;
     [SerializeField] float farScale = 1.6f;
@@ -23,7 +23,7 @@ public class GhostVignette : MonoBehaviour
         Volume volume = GetComponent<Volume>();
         if (!volume.profile.TryGet(out vignette))
         {
-            Debug.LogWarning("GhostVignette: add a Vignette override to the Volume profile.", this);
+            Debug.LogWarning("GhostVignette: add a vignette override to the Volume profile", this);
         }
     }
 

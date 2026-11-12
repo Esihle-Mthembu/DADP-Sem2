@@ -15,13 +15,17 @@ namespace InventorySystem
             public int maxCount;
         }
 
-        [Tooltip("Set the maximum amount the player can carry of each item type.")]
+        [Tooltip("Set the maximum amount the player can carry of each item type")]
         [SerializeField]
         private List<ItemLimit> itemLimits = new List<ItemLimit>
         {
-            new ItemLimit { type = ItemType.File,         maxCount = 3 },
-            new ItemLimit { type = ItemType.Key,          maxCount = 3 },
-            new ItemLimit { type = ItemType.Torch,        maxCount = 1 },
+            new ItemLimit { type = ItemType.DiagnosisFile,   maxCount = 1 },
+            new ItemLimit { type = ItemType.TreatmentFile,   maxCount = 1 },
+            new ItemLimit { type = ItemType.TestResultsFile, maxCount = 1 },
+            new ItemLimit { type = ItemType.Medication,      maxCount = 1 },
+            new ItemLimit { type = ItemType.Torch,           maxCount = 1 },
+            new ItemLimit { type = ItemType.MagnifyingGlass, maxCount = 1 },
+            new ItemLimit { type = ItemType.Key,             maxCount = 3 },
         };
 
         private readonly Dictionary<ItemType, int> _maxCounts = new Dictionary<ItemType, int>();

@@ -30,6 +30,7 @@ public class PuzzleGridController : MonoBehaviour
     {
         solved = false;
         firstSelectedSlot = -1;
+
         if (shuffleOnEnable)
         {
             ShuffleAndDisplay();
@@ -52,7 +53,11 @@ public class PuzzleGridController : MonoBehaviour
         foreach (Transform child in transform)
         {
             var img = child.GetComponent<Image>();
-            if (img != null) tileImages.Add(img);
+
+            if (img != null)
+            {
+                tileImages.Add(img);
+            }
         }
     }
 
@@ -61,22 +66,29 @@ public class PuzzleGridController : MonoBehaviour
         int tileCount = columns * rows;
         correctSprites = new Sprite[tileCount];
 
-        float tileWidth = sourceImage.width / (float)columns;
-        float tileHeight = sourceImage.height / (float)rows;
+        int tileW = sourceImage.width / columns;
+        int tileH = sourceImage.height / rows;
 
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < columns; col++)
             {
                 int index = row * columns + col;
-                float x = col * tileWidth;
-                float y = sourceImage.height - (row + 1) * tileHeight;
+                int x = col * tileW;
+                int y = sourceImage.height - (row + 1) * tileH;
 
                 Sprite sprite = Sprite.Create(
                     sourceImage,
-                    new Rect(x, y, tileWidth, tileHeight),
-                    new Vector2(0.5f, 0.5f)
+                    new Rect(x, y, tileW, tileH),
+                    new Vector2(0.5f, 0.5f),
+                    100f, 0, SpriteMeshType.FullRect
                 );
+
+                if (sprite == null)
+                {
+                    Debug.LogError($"Sprite {index} failed: rect {x},{y},{tileW},{tileH} tex {sourceImage.width}x{sourceImage.height}", this);
+                }
+
                 correctSprites[index] = sprite;
             }
         }
@@ -166,14 +178,20 @@ public class PuzzleGridController : MonoBehaviour
     {
         for (int i = 0; i < slotContents.Length; i++)
         {
-            if (slotContents[i] != i) return false;
+            if (slotContents[i] != i)
+            {
+                return false;
+            }
         }
         return true;
     }
 
     private void CheckSolved()
     {
-        if (!IsSolvedState()) return;
+        if (!IsSolvedState())
+        {
+            return;
+        }
 
         solved = true;
         OnSolved?.Invoke();

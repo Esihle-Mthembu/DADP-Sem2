@@ -2,74 +2,81 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-10)]   //Runs before PuzzleLockUI so it can see the puzzle is still open
 public class PauseManager : MonoBehaviour
 {
     [Header("Pause Menu")]
     public GameObject pauseMenu;
 
-    [Header("Player")]
-    public FPController playerController;
+    [Header("Puzzle")]
+    public PuzzleLockUI puzzleLockUI;
+
+    [Header("Pin Pad")]
+    public PinPadUI pinPadUI;
 
     private bool isPaused = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        UIState.Reset(); // Clears any leftover "blocked" state
         pauseMenu.SetActive(false);
-
         Time.timeScale = 1f;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            if (!isPaused)
+            //Esc closes the puzzle or pinpad first, not the pause menu
+            if (puzzleLockUI != null && puzzleLockUI.IsOpen)
             {
-                PauseGame();
+                return;
             }
+
+            if (pinPadUI != null && pinPadUI.IsOpen)
+            {
+                return;
+            }
+
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else PauseGame();
         }
     }
 
     public void PauseGame()
     {
+        if (isPaused)
+        {
+            return;
+        }
+
         isPaused = true;
 
         pauseMenu.SetActive(true);
-
+        pauseMenu.transform.SetAsLastSibling(); //Goes on top of the pinpad and other panels
         Time.timeScale = 0f;
-
-        //Disable player movement and camera
-        playerController.enabled = false;
-
-        //Show mouse
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        UIState.Push(); //Frees the cursor and blocks player input
     }
 
     public void ResumeGame()
     {
+        if (!isPaused) return;
         isPaused = false;
 
         pauseMenu.SetActive(false);
-
         Time.timeScale = 1f;
-
-        //Enable player movement and camera
-        playerController.enabled = true;
-
-        //Hide and lock mouse
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        UIState.Pop(); //Locks cursor again only if nothing else is open
     }
 
     public void Exit()
     {
         Time.timeScale = 1f;
+        UIState.Reset();
+        Cursor.lockState = CursorLockMode.None; 
+        Cursor.visible = true;
         SceneManager.LoadScene("Main Menu Scene");
     }
 }

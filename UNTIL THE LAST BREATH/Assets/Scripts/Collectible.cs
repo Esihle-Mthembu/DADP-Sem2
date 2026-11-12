@@ -10,7 +10,7 @@ public class Collectible : MonoBehaviour, IInteractable
 
     void Start()
     {
-        //Remove it from the world if already collected in previous gameplay
+        //Remove object from the world if already collected in previous gameplay
         var sm = SaveManager.Instance;
         if (sm != null && !string.IsNullOrEmpty(pickupID) && sm.Current.collectedItems.Contains(pickupID))
         {

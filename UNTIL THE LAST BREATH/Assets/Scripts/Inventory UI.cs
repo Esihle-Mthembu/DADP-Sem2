@@ -14,6 +14,8 @@ namespace InventorySystem
         [SerializeField] private bool lockCursorWhileClosed = true;
         [SerializeField] private Key shortcutKey = Key.Tab;
 
+        public static bool IsOpen { get; private set; }
+
         private bool _isOpen;
 
         private void OnEnable()
@@ -26,6 +28,8 @@ namespace InventorySystem
 
         private void OnDisable()
         {
+            IsOpen = false;
+
             if (InventoryManager.Instance != null)
             {
                 InventoryManager.Instance.OnItemChanged -= HandleItemChanged;
@@ -34,6 +38,8 @@ namespace InventorySystem
 
         private void Start()
         {
+            IsOpen = false;
+
             if (InventoryManager.Instance != null)
             {
                 InventoryManager.Instance.OnItemChanged -= HandleItemChanged;
@@ -63,6 +69,7 @@ namespace InventorySystem
         private void SetOpen(bool open, bool instant = false)
         {
             _isOpen = open;
+            IsOpen = open;
 
             if (inventoryPanel != null)
             {
