@@ -16473,6 +16473,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 420194640}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 420194644}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 420194643}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 420194642}
   m_SourcePrefab: {fileID: 100100000, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
 --- !u!1 &420194639 stripped
 GameObject:
@@ -16527,6 +16536,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &420194642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420194639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61cbe20a66de72a4aa293b84316fcebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Collectible
+  itemType: 5
+  amount: 1
+  itemName: Medication
+  pickupID: Medication
+--- !u!114 &420194643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420194639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727116f06d4d175479baa72b668e806d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickUp
+  pickupID: Medication
+--- !u!114 &420194644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420194639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac70b7030959f04191f2c54c589e71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
+  promptText: Press E to collect medication into the inventory.
 --- !u!4 &422918789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b41e4b94e51c77141920670ce4311940, type: 3}
@@ -40012,7 +40063,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You Win!
+  m_text: You Escaped!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -40039,8 +40090,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
-  m_fontSizeBase: 300
+  m_fontSize: 210
+  m_fontSizeBase: 210
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
