@@ -19,7 +19,7 @@ public class ObjectivePopup : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float startDelay = 1.5f;
     [SerializeField] private float fadeTime = 0.6f;
-    [SerializeField] private float autoHideAfter = 20f; //0 = only hide on key press
+    [SerializeField] private float autoHideAfter = 20f;
 
     [Header("Message")]
     [TextArea(8, 14)]
@@ -28,7 +28,7 @@ public class ObjectivePopup : MonoBehaviour
         "You made it to the East Wing.\n\n" +
         "Find and collect all 3 files, then go to Dr Gustavo to get your grandmother's medication. Check the inventory to keep track of your progress.\n\n" +
         "Be quick. The police will raid the hospital soon, and you can't be caught here.\n\n" +
-        "Watch out for the ghost that haunts these halls and wards. Use your torch and magnifying glass to help you.\n\n" +
+        "Watch out for the ghost that haunts these halls and wards. Enter a room to be safe from the ghost. Use your torch and magnifying glass to help you.\n\n" +
         "<size=70%>Press Enter or Space to close</size>";
 
     private bool dismissed;
