@@ -9,21 +9,41 @@ public class PoliceSoundTrigger : MonoBehaviour
 
     private bool hasPlayed;
 
-    private void OnTriggerEnter(Collider other)
+    public void PlayPoliceSounds()
     {
-        if (!other.CompareTag("Player")) return;
-        if (onlyOnce && hasPlayed) return;
+        if (onlyOnce && hasPlayed)
+        {
+            return;
+        }
 
-        if (sirens != null) sirens.Play();
-        if (talking != null) talking.Play();
+        if (sirens != null)
+        {
+            sirens.Play();
+        }
+
+        if (talking != null)
+        {
+            talking.Play();
+        }
+
         hasPlayed = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!stopWhenLeaving || !other.CompareTag("Player")) return;
+        if (!stopWhenLeaving || !other.CompareTag("Player"))
+        {
+            return;
+        }
 
-        if (sirens != null) sirens.Stop();
-        if (talking != null) talking.Stop();
+        if (sirens != null)
+        {
+            sirens.Stop();
+        }
+
+        if (talking != null)
+        {
+            talking.Stop();
+        }
     }
 }

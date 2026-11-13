@@ -16,13 +16,14 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
     [Header("Door Movement")]
     public Animator animator;
+    [SerializeField] private PoliceSoundTrigger policeSounds;
 
     [Header("Locks")]
     public PinPadUI linkedPinPad;
     public PuzzleLockUI linkedPuzzleLock;
 
     [Header("Save/Load")]
-    public string doorID; //Unique per door, used for saving/loading
+    public string doorID;
     [SerializeField] string openStateName = "Open";
     [SerializeField] string closedStateName = "Closed";
 
@@ -67,7 +68,8 @@ public class DoorInteractable : MonoBehaviour, IInteractable
                         : "Locked";
 
                 case LockType.Key:
-                    bool hasKey = InventoryManager.Instance != null && InventoryManager.Instance.HasItem(requiredKeyType);
+                    bool hasKey = InventoryManager.Instance != null
+                        && InventoryManager.Instance.HasItem(requiredKeyType);
                     return hasKey
                         ? "Press F to unlock"
                         : "Locked - you need a key";
@@ -88,8 +90,10 @@ public class DoorInteractable : MonoBehaviour, IInteractable
                     {
                         linkedPinPad.Open(this);
                     }
-
-                    else Debug.LogWarning("DoorInteractable: Pin lock but no PinPadUI assigned on " + name, this);
+                    else
+                    {
+                        Debug.LogWarning("DoorInteractable: Pin lock but no PinPadUI assigned on " + name, this);
+                    }
                     return;
 
                 case LockType.Puzzle:
@@ -97,8 +101,10 @@ public class DoorInteractable : MonoBehaviour, IInteractable
                     {
                         linkedPuzzleLock.Open(this);
                     }
-
-                    else Debug.LogWarning("DoorInteractable: Puzzle lock but no PuzzleLockUI assigned on " + name, this);
+                    else
+                    {
+                        Debug.LogWarning("DoorInteractable: Puzzle lock but no PuzzleLockUI assigned on " + name, this);
+                    }
                     return;
 
                 case LockType.Key:
@@ -112,7 +118,8 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
     private void TryOpenWithKey()
     {
-        bool hasKey = InventoryManager.Instance != null && InventoryManager.Instance.HasItem(requiredKeyType);
+        bool hasKey = InventoryManager.Instance != null
+            && InventoryManager.Instance.HasItem(requiredKeyType);
 
         if (!hasKey)
         {
@@ -137,6 +144,12 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
         isOpen = !isOpen;
         animator.SetBool("IsOpen", isOpen);
+
+        if (isOpen && policeSounds != null)
+        {
+            policeSounds.PlayPoliceSounds();
+        }
+
         StateChanged?.Invoke();
     }
 
@@ -144,26 +157,27 @@ public class DoorInteractable : MonoBehaviour, IInteractable
     {
         isUnlocked = true;
         ToggleDoor();
+
         if (SaveManager.Instance != null)
         {
             SaveManager.Instance.Save();
         }
     }
 
-    //Called by the ghost, shuts the door and locks it again
+    // Called by the ghost to shut and relock the door.
     public void ForceLock()
     {
-        if (lockType == LockType.None) //No way for the player to unlock it again
+        if (lockType == LockType.None)
         {
             return;
         }
 
-        if (lockType == LockType.Key && consumeKeyOnUnlock) //The key is gone, so relocking traps the player
+        if (lockType == LockType.Key && consumeKeyOnUnlock)
         {
             return;
         }
 
-        if (!isUnlocked) //Already locked
+        if (!isUnlocked)
         {
             return;
         }
@@ -173,8 +187,9 @@ public class DoorInteractable : MonoBehaviour, IInteractable
 
         if (animator != null)
         {
-            animator.SetBool("IsOpen", false);   //Door swings shut
+            animator.SetBool("IsOpen", false);
         }
+
         StateChanged?.Invoke();
 
         if (SaveManager.Instance != null)
@@ -195,6 +210,6 @@ public class DoorInteractable : MonoBehaviour, IInteractable
         }
 
         animator.SetBool("IsOpen", open);
-        animator.Play(open ? openStateName : closedStateName, 0, 1f); //Jump straight to the end of the clip so the door doesn't animate on load
+        animator.Play(open ? openStateName : closedStateName, 0, 1f);
     }
 }

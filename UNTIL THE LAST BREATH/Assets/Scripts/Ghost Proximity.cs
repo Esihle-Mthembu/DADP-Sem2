@@ -5,8 +5,8 @@ public class GhostProximity : MonoBehaviour
     public static GhostProximity Instance { get; private set; }
 
     [SerializeField] Transform player;
-    [SerializeField] float farDistance = 12f; //Start effect
-    [SerializeField] float nearDistance = 5f; //Full effect level at this point
+    [SerializeField] float farDistance = 12f;
+    [SerializeField] float nearDistance = 5f; 
     [SerializeField] float smoothing = 3f;      
 
     public float Intensity { get; private set; }
