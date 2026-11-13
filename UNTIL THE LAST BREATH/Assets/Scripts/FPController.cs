@@ -32,8 +32,8 @@ public class FPController : MonoBehaviour
     private PickUp heldObject;
 
     [Header("Throw Settings")]
-    public float throwForce = 15f;
-    public float throwUpwardBoost = 4f;
+    public float throwForce = 8f;
+    public float throwUpwardBoost = 2f;
     [Header("Interact settings")]
     public float interactRange = 5f;
     private CharacterController controller;
@@ -42,6 +42,7 @@ public class FPController : MonoBehaviour
     private Vector3 velocity;
     private float verticalRotation = 0f;
     public float Pitch => verticalRotation;
+    public bool IsHolding => heldObject != null;
 
     public void SetPitch(float pitch)
     {

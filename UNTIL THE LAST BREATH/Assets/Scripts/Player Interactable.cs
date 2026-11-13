@@ -13,6 +13,9 @@ public class PlayerInteractable : MonoBehaviour
 
     private readonly Collider[] nearbyBuffer = new Collider[32];
 
+    //Layer mask that ignores the object the player is currently carrying
+    private int ActiveMask => interactableLayer & ~LayerMask.GetMask("Hold");
+
     void Update()
     {
         string message = null;
@@ -22,7 +25,8 @@ public class PlayerInteractable : MonoBehaviour
         if (playerCamera != null)
         {
             Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray, out RaycastHit hit, interactRange, ActiveMask, QueryTriggerInteraction.Ignore)
+                && !IsHeld(hit.collider))
             {
                 interactable = hit.collider.GetComponentInParent<IInteractable>();
 
@@ -65,17 +69,25 @@ public class PlayerInteractable : MonoBehaviour
         }
     }
 
+    private bool IsHeld(Collider col)
+    {
+        PickUp p = col.GetComponentInParent<PickUp>();
+        return p != null && p.IsHeld;
+    }
+
     private PromptTarget GetNearestPromptTarget()
     {
         int count = Physics.OverlapSphereNonAlloc(
             transform.position, proximityRadius, nearbyBuffer,
-            interactableLayer, QueryTriggerInteraction.Ignore);
+            ActiveMask, QueryTriggerInteraction.Ignore);
 
         PromptTarget best = null;
         float bestDist = float.MaxValue;
 
         for (int i = 0; i < count; i++)
         {
+            if (IsHeld(nearbyBuffer[i])) continue;
+
             PromptTarget t = nearbyBuffer[i].GetComponentInParent<PromptTarget>();
             if (t == null) continue;
 
