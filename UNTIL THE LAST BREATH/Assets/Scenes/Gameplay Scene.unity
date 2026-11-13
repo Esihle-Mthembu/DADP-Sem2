@@ -16425,11 +16425,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.409
+      value: 16.399
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 198.87
+      value: 202.263
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16482,6 +16482,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 420194642}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 420194648}
   m_SourcePrefab: {fileID: 100100000, guid: 9bce52327334cb0478e125c9074ddf1b, type: 3}
 --- !u!1 &420194639 stripped
 GameObject:
@@ -16578,6 +16581,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptTarget
   promptText: Press E to collect medication into the inventory.
+--- !u!114 &420194648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420194639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c469000670e04a14c8bbd52f1bb8aa78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleGlow
+  glowColor: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
+  minIntensity: 0.5
+  maxIntensity: 4
+  pulseSpeed: 3
 --- !u!4 &422918789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b41e4b94e51c77141920670ce4311940, type: 3}
@@ -41289,6 +41308,22 @@ MonoBehaviour:
   amount: 1
   itemName: Treatment File
   pickupID: Treatment_File
+--- !u!114 &1229778609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229778594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c469000670e04a14c8bbd52f1bb8aa78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleGlow
+  glowColor: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
+  minIntensity: 0.5
+  maxIntensity: 4
+  pulseSpeed: 3
 --- !u!1 &1243941846
 GameObject:
   m_ObjectHideFlags: 0
@@ -44298,6 +44333,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.029295808, y: 0.021848785, z: 0.021224461}
   m_Center: {x: -0.0046474147, y: 0.0009228256, z: 0.00061217183}
+--- !u!114 &1401582091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401582079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c469000670e04a14c8bbd52f1bb8aa78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleGlow
+  glowColor: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
+  minIntensity: 0.5
+  maxIntensity: 4
+  pulseSpeed: 3
 --- !u!4 &1405681654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: caa2a4745767c164ba8f822279aeaf43, type: 3}
@@ -46732,6 +46783,22 @@ MonoBehaviour:
   amount: 1
   itemName: Test Results File
   pickupID: Test_Results_File
+--- !u!114 &1548429919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548429906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c469000670e04a14c8bbd52f1bb8aa78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleGlow
+  glowColor: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
+  minIntensity: 0.5
+  maxIntensity: 4
+  pulseSpeed: 3
 --- !u!1001 &1549668266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48252,6 +48319,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1229778605}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1229778609}
   m_SourcePrefab: {fileID: 100100000, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
 --- !u!1 &1579585658 stripped
 GameObject:
@@ -53211,6 +53281,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1548429917}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1548429919}
   m_SourcePrefab: {fileID: 100100000, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
 --- !u!4 &1826491147 stripped
 Transform:
@@ -58555,6 +58628,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1401582083}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1401582091}
   m_SourcePrefab: {fileID: 100100000, guid: 4bf7b9dd7417ca34da7a5541703a7fcc, type: 3}
 --- !u!4 &2053188733 stripped
 Transform:
